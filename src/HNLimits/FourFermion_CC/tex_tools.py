@@ -1,7 +1,7 @@
 import pylatex
 from pylatex.utils import NoEscape
 import os
-import requests
+from security import safe_requests
 
 def add_plot(doc, case):
     # caption with the citations
@@ -32,7 +32,7 @@ def create_latex_doc(cases, PATH = 'tex_files/'):
         for case in cases:
             for ref in case.limits.reference:
                 if not ref in added_ids:
-                    response = requests.get(f"https://inspirehep.net/api/literature?q=texkeys:{ref}&format=bibtex")
+                    response = safe_requests.get(f"https://inspirehep.net/api/literature?q=texkeys:{ref}&format=bibtex")
                     if response.status_code == 200:
                         f.write((response.content).decode("utf-8") )
                         added_ids.append(ref)

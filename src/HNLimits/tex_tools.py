@@ -1,7 +1,7 @@
 import pylatex
 from pylatex.utils import NoEscape
 import os
-import requests
+from security import safe_requests
 
 def default_noentry(key):
     ''' Default entry for bibentry not found in Inspire '''
@@ -40,7 +40,7 @@ def create_latex_doc(cases, TEX_PATH = 'tex_files/'):
             for ref in case.limits.reference:
                 if not (ref in added_ids):
                     # get the bib entry from inspire
-                    response = requests.get(f"https://inspirehep.net/api/literature?q=texkeys:{ref}&format=bibtex")
+                    response = safe_requests.get(f"https://inspirehep.net/api/literature?q=texkeys:{ref}&format=bibtex")
                     
                     # check api found an entry and that it's not empty
                     if response.status_code == 200 and response.content:
